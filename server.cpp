@@ -6,6 +6,7 @@
 #include <string>
 #include <QDebug>
 #include <QFileInfo>
+#include <QDir>
 
 #include <stdlib.h>
 #include <string>
@@ -44,11 +45,19 @@ string CustomHtml;//////要传送的网页内容
 QFile *Qfile; ///qt要读取的文件
 QString QcustomHtml; ///qt读取的文件内容
 QByteArray QbyteArray;
+//遍历目录
+QDir *Qdir;
+QFileInfoList Qlist;
+int dir_i;
+QFileInfo Qfile_i;
 //线程
 HANDLE hThread = NULL;
 #define BUFFER_SIZE 1024
 static int csock, length;//sock是服务器端侦听套接字，csock是客户端连接套接字
 int sock = NULL;
+
+
+
 
 Server::Server(){
 
@@ -233,8 +242,44 @@ void send(string file_name){
         //CustomHtml
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
+    }else if(fi.isDir()){
+        Qdir = new QDir(QString::fromStdString(file_path));
+        Qdir->setFilter(QDir::Dirs|QDir::Files);
+        Qlist = Qdir->entryInfoList();
+        dir_i = 0;
+        QcustomHtml = "";
+        CustomHtml = "";
+        do{
+            Qfile_i = Qlist.at(dir_i);
+            if(Qfile_i.fileName()=="."|Qfile_i.fileName()==".."){
+                dir_i++;
+                continue;
+            }
+            QcustomHtml += Qfile_i.filePath();
+            QcustomHtml += "</br>";
+            dir_i++;
+
+        }while(dir_i<Qlist.size());
+
+        /////////头部格式
+        hdrFmt =
+        "HTTP/1.0 200 OK\r\n"
+        "Server: MySocket Server\r\n"
+        "Content-Type: text/html\r\n"
+        "Accept-Ranges: bytes\r\n"
+        "Content-Length: %d\r\n\r\n\0";
+        //
+
+        sprintf(headers, hdrFmt.data(), CustomHtml.length());
+        /////发送响应头部
+        send(csock, headers, strlen(headers), 0);
+        ////根据请求地址打开静态文件
+        //CustomHtml
+        /////发送内容
+        send(csock, CustomHtml.data(), CustomHtml.length(), 0);
     }else{
         qDebug()<<"file not extsts...";
+
         /////////头部格式
         hdrFmt =
         "HTTP/1.0 200 OK\r\n"
