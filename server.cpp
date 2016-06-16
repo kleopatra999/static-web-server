@@ -146,7 +146,7 @@ DWORD WINAPI run(LPVOID lpParameter){
         //////////侦听到连接后，产生新的套接字
         ///
         ///////////用来和客户端传递消息
-        printf("\n----------------request---------------------\n");
+        qDebug()<<"\n----------------request---------------------\n";
         /////
         csock = accept(sock, (struct sockaddr *)&client_ipaddr, &length);
         if (csock == SOCKET_ERROR)
@@ -203,15 +203,22 @@ void send(string file_name){
         hdrFmt =
         "HTTP/1.0 200 OK\r\n"
         "Server: MySocket Server\r\n"
-        "Content-Type: text/html\r\n"
+        "Content-Type: image/png\r\n"
         "Accept-Ranges: bytes\r\n"
+        "Accept-Charset: utf-8\r\n"
         "Content-Length: %d\r\n\r\n\0";
         //
+        ///html
+        //"Content-Type: text/html\r\n"
+        ///jpg
+        //"Content-Type: image/jpeg\r\n"
+
         //////////要传送的网页内容
         CustomHtml =
         "<html>\r\n"
         "<head>\r\n"
         "<title></title>\r\n"
+        "<meta http-equiv='content-type' content='text/html;charset=utf-8'>\r\n"
         "</head><center>\r\n"
         "<body>\r\n"
         "<p align=\"center\">welcome to web server ...</p>\r\n"
@@ -243,29 +250,35 @@ void send(string file_name){
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
     }else if(fi.isDir()){
+        qDebug()<<"is dir ...";
         Qdir = new QDir(QString::fromStdString(file_path));
         Qdir->setFilter(QDir::Dirs|QDir::Files);
         Qlist = Qdir->entryInfoList();
         dir_i = 0;
         QcustomHtml = "";
-        CustomHtml = "";
+        CustomHtml = "<html><head><meta http-equiv='content-type' content='text/html;charset=utf-8'><title></title></head><body><center>";
         do{
             Qfile_i = Qlist.at(dir_i);
             if(Qfile_i.fileName()=="."|Qfile_i.fileName()==".."){
                 dir_i++;
                 continue;
             }
-            QcustomHtml += Qfile_i.filePath();
-            QcustomHtml += "</br>";
+            QcustomHtml += "<a href='"+Qfile_i.filePath().mid(dir.length())+"'>";
+            QcustomHtml += Qfile_i.filePath().mid(dir.length()); ///.mid(file_path.length())
+            QcustomHtml += "</a></br>";
             dir_i++;
 
         }while(dir_i<Qlist.size());
+        CustomHtml += QcustomHtml.toStdString();
+        CustomHtml += "</center><body></html>";
 
         /////////头部格式
         hdrFmt =
         "HTTP/1.0 200 OK\r\n"
         "Server: MySocket Server\r\n"
         "Content-Type: text/html\r\n"
+        "Content-Type: text/html\r\n"
+        "cahrset: utf-8\r\n"
         "Accept-Ranges: bytes\r\n"
         "Content-Length: %d\r\n\r\n\0";
         //
@@ -277,39 +290,40 @@ void send(string file_name){
         //CustomHtml
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
-    }else{
-        qDebug()<<"file not extsts...";
-
-        /////////头部格式
-        hdrFmt =
-        "HTTP/1.0 200 OK\r\n"
-        "Server: MySocket Server\r\n"
-        "Content-Type: text/html\r\n"
-        "Accept-Ranges: bytes\r\n"
-        "Content-Length: %d\r\n\r\n\0";
-        //
-        //////////要传送的网页内容
-        CustomHtml =
-        "<html>\r\n"
-        "<head>\r\n"
-        "<title></title>\r\n"
-        "</head>\r\n"
-        "<body><center>\r\n"
-        "<p align=\"center\">welcome to web server ...</p>\r\n"
-        "<p align=\"center\">the file not exists ...</p>\r\n"
-        "<h3 align=\"center\"><a href=\"https://github.com/kompasim\">github.com</a></h3>\r\n"
-        "<p>over!</p>\r\n"
-        "</center></body></html>\r\n\r\n\0";
-        sprintf(headers, hdrFmt.data(), CustomHtml.length());
-
-        /////发送响应头部
-        send(csock, headers, strlen(headers), 0);
-        ////根据请求地址打开静态文件
-        //CustomHtml
-        /////发送内容
-        send(csock, CustomHtml.data(), CustomHtml.length(), 0);
-
     }
+//    else{
+//        qDebug()<<"file not extsts...";
+
+//        /////////头部格式
+//        hdrFmt =
+//        "HTTP/1.0 200 OK\r\n"
+//        "Server: MySocket Server\r\n"
+//        "Content-Type: text/html\r\n"
+//        "Accept-Ranges: bytes\r\n"
+//        "Content-Length: %d\r\n\r\n\0";
+//        //
+//        //////////要传送的网页内容
+//        CustomHtml =
+//        "<html>\r\n"
+//        "<head>\r\n"
+//        "<title></title>\r\n"
+//        "</head>\r\n"
+//        "<body><center>\r\n"
+//        "<p align=\"center\">welcome to web server ...</p>\r\n"
+//        "<p align=\"center\">the file not exists ...</p>\r\n"
+//        "<h3 align=\"center\"><a href=\"https://github.com/kompasim\">github.com</a></h3>\r\n"
+//        "<p>over!</p>\r\n"
+//        "</center></body></html>\r\n\r\n\0";
+//        sprintf(headers, hdrFmt.data(), CustomHtml.length());
+
+//        /////发送响应头部
+//        send(csock, headers, strlen(headers), 0);
+//        ////根据请求地址打开静态文件
+//        //CustomHtml
+//        /////发送内容
+//        send(csock, CustomHtml.data(), CustomHtml.length(), 0);
+
+//    }
 
 ///come on guy , it is time to finish ...
 
