@@ -46,7 +46,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(231, 370);
-        MainWindow->setStyleSheet(QStringLiteral(""));
+        MainWindow->setStyleSheet(QStringLiteral("background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.252809 rgba(30, 30, 30, 255), stop:0.837079 rgba(100, 100, 100, 255), stop:0.988764 rgba(4, 4, 4, 255));"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QLatin1String("\n"
@@ -54,37 +54,58 @@ public:
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setGeometry(QRect(20, 40, 191, 21));
+        lineEdit->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);"));
         lineEdit_2 = new QLineEdit(centralWidget);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
         lineEdit_2->setGeometry(QRect(20, 100, 191, 20));
+        lineEdit_2->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);"));
         lineEdit_3 = new QLineEdit(centralWidget);
         lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
         lineEdit_3->setGeometry(QRect(20, 160, 191, 20));
+        lineEdit_3->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(20, 20, 54, 12));
-        label->setStyleSheet(QStringLiteral(""));
+        label->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
+"background-color: rgba(255, 255, 255, 0);"));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(20, 80, 54, 12));
+        label_2->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
+"background-color: rgba(255, 255, 255, 0);"));
         label_3 = new QLabel(centralWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setGeometry(QRect(20, 140, 54, 12));
+        label_3->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
+"background-color: rgba(255, 255, 255, 0);"));
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(20, 200, 54, 12));
+        label_4->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
+"background-color: rgba(255, 255, 255, 0);"));
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
         textBrowser->setGeometry(QRect(20, 220, 191, 71));
+        textBrowser->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 255);\n"
+"color: rgb(0, 0, 0);"));
         start_button = new QPushButton(centralWidget);
         start_button->setObjectName(QStringLiteral("start_button"));
         start_button->setGeometry(QRect(20, 320, 51, 20));
+        start_button->setStyleSheet(QLatin1String("background-color: rgb(16, 16, 16);\n"
+"color: rgb(255, 255, 255);"));
         stop_button = new QPushButton(centralWidget);
         stop_button->setObjectName(QStringLiteral("stop_button"));
         stop_button->setGeometry(QRect(160, 320, 51, 20));
+        stop_button->setStyleSheet(QLatin1String("background-color: rgb(16, 16, 16);\n"
+"color: rgb(255, 255, 255);"));
         restart_button = new QPushButton(centralWidget);
         restart_button->setObjectName(QStringLiteral("restart_button"));
         restart_button->setGeometry(QRect(90, 320, 51, 20));
+        restart_button->setStyleSheet(QLatin1String("background-color: rgb(16, 16, 16);\n"
+"color: rgb(255, 255, 255);"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));

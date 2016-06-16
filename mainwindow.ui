@@ -14,7 +14,7 @@
    <string>WebServer</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.252809 rgba(30, 30, 30, 255), stop:0.837079 rgba(100, 100, 100, 255), stop:0.988764 rgba(4, 4, 4, 255));</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -30,6 +30,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>21</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+    </property>
     <property name="placeholderText">
      <string>enter an ip</string>
     </property>
@@ -43,6 +47,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_3">
     <property name="geometry">
@@ -52,6 +60,10 @@ border-color: rgb(122, 122, 122);</string>
       <width>191</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -64,7 +76,8 @@ border-color: rgb(122, 122, 122);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>IP</string>
@@ -79,6 +92,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>12</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
+    </property>
     <property name="text">
      <string>PORT</string>
     </property>
@@ -91,6 +108,10 @@ border-color: rgb(122, 122, 122);</string>
       <width>54</width>
       <height>12</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>DIR</string>
@@ -105,6 +126,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>12</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
+    </property>
     <property name="text">
      <string>STATUS</string>
     </property>
@@ -118,6 +143,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="start_button">
     <property name="geometry">
@@ -127,6 +156,10 @@ border-color: rgb(122, 122, 122);</string>
       <width>51</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(16, 16, 16);
+color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>STARAT</string>
@@ -141,6 +174,10 @@ border-color: rgb(122, 122, 122);</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(16, 16, 16);
+color: rgb(255, 255, 255);</string>
+    </property>
     <property name="text">
      <string>STOP</string>
     </property>
@@ -153,6 +190,10 @@ border-color: rgb(122, 122, 122);</string>
       <width>51</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(16, 16, 16);
+color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>RESTART</string>

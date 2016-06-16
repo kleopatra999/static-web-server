@@ -10,6 +10,8 @@
 
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 #include <WS2tcpip.h>
 
@@ -27,6 +29,8 @@
 using namespace std;
 DWORD WINAPI run(LPVOID lpParameter);
 void send(string file_name);
+
+
 
 
 WSADATA wsaData;
@@ -50,6 +54,9 @@ QDir *Qdir;
 QFileInfoList Qlist;
 int dir_i;
 QFileInfo Qfile_i;
+//图片
+QString Qimage_str;
+FILE *fp;
 //线程
 HANDLE hThread = NULL;
 #define BUFFER_SIZE 1024
@@ -199,13 +206,43 @@ void send(string file_name){
     QFileInfo fi(QString::fromStdString(file_path));
     if(fi.isFile()){
         qDebug()<<"file exists ...";
+        if(fi.suffix()=="jpg"||fi.suffix()=="png"||fi.suffix()=="gif"||fi.suffix()=="bmp"){
+            QFileInfo my_fi(QString::fromStdString(file_path));
+            hdrFmt =
+            "HTTP/1.0 200 OK\r\n"
+            "Server: MySocket Server\r\n"
+            "Content-Type: image/png\r\n"
+            "cahrset: utf-8\r\n"
+            "Accept-Ranges: bytes\r\n"
+            "Content-Length: %d\r\n\r\n";
+            sprintf(headers, hdrFmt.data(),my_fi.size());
+            send(csock, headers, strlen(headers), 0);
+            fstream rfile;
+            ///fstream wfile;
+            char databuf[102400];
+            rfile.open(file_path, ios::out  | ios::in  | ios::binary);
+            ///wfile.open ("wfile.jpg", ios::out  | ios::binary | ios::trunc);
+            while(rfile.is_open())
+            {
+                memset(databuf,0,sizeof(databuf));
+                rfile.read(databuf,sizeof(databuf)-1);
+                int readLen = rfile.gcount();
+                ///wfile.write(databuf, readLen);
+                send(csock, databuf, readLen, 0);
+                if(rfile.eof())
+                    break;
+            }
+            rfile.close();
+            ///wfile.close();
+            return ;
+        }
         /////////头部格式
         hdrFmt =
         "HTTP/1.0 200 OK\r\n"
         "Server: MySocket Server\r\n"
-        "Content-Type: image/png\r\n"
+        "Content-Type: text/html\r\n"
+        "cahrset: utf-8\r\n"
         "Accept-Ranges: bytes\r\n"
-        "Accept-Charset: utf-8\r\n"
         "Content-Length: %d\r\n\r\n\0";
         //
         ///html
@@ -238,11 +275,7 @@ void send(string file_name){
             QcustomHtml = QcustomHtml + QbyteArray;
         }
         CustomHtml = QcustomHtml.toStdString();
-
-
         sprintf(headers, hdrFmt.data(), CustomHtml.length());
-
-
         /////发送响应头部
         send(csock, headers, strlen(headers), 0);
         ////根据请求地址打开静态文件
@@ -291,42 +324,8 @@ void send(string file_name){
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
     }
-//    else{
-//        qDebug()<<"file not extsts...";
-
-//        /////////头部格式
-//        hdrFmt =
-//        "HTTP/1.0 200 OK\r\n"
-//        "Server: MySocket Server\r\n"
-//        "Content-Type: text/html\r\n"
-//        "Accept-Ranges: bytes\r\n"
-//        "Content-Length: %d\r\n\r\n\0";
-//        //
-//        //////////要传送的网页内容
-//        CustomHtml =
-//        "<html>\r\n"
-//        "<head>\r\n"
-//        "<title></title>\r\n"
-//        "</head>\r\n"
-//        "<body><center>\r\n"
-//        "<p align=\"center\">welcome to web server ...</p>\r\n"
-//        "<p align=\"center\">the file not exists ...</p>\r\n"
-//        "<h3 align=\"center\"><a href=\"https://github.com/kompasim\">github.com</a></h3>\r\n"
-//        "<p>over!</p>\r\n"
-//        "</center></body></html>\r\n\r\n\0";
-//        sprintf(headers, hdrFmt.data(), CustomHtml.length());
-
-//        /////发送响应头部
-//        send(csock, headers, strlen(headers), 0);
-//        ////根据请求地址打开静态文件
-//        //CustomHtml
-//        /////发送内容
-//        send(csock, CustomHtml.data(), CustomHtml.length(), 0);
-
-//    }
-
-///come on guy , it is time to finish ...
-
 
 }
+
+
 
