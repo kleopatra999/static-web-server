@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <WinSock2.h>
+#include <mainwindow.h>
 
 #include <string>
 #include <QDebug>
@@ -62,6 +63,7 @@ HANDLE hThread = NULL;
 #define BUFFER_SIZE 1024
 static int csock, length;//sock是服务器端侦听套接字，csock是客户端连接套接字
 int sock = NULL;
+//ui
 
 
 
@@ -78,7 +80,10 @@ void Server::start(string ip_,int port_,string dir_){
     dir = dir_;
     if(hThread==NULL&&sock==NULL){
         hThread = CreateThread(NULL, 0, run, NULL, 0, NULL);
+        MainWindow::updateTextBrowser(QString::fromStdString("server started"));
     }
+
+
     return ;
 
 }
@@ -101,6 +106,7 @@ void Server::stop(){
         CloseHandle(hThread);
         hThread = NULL;
         sock = NULL;
+        MainWindow::updateTextBrowser(QString::fromStdString("server stopped"));
     }
     return ;
 }
@@ -206,12 +212,12 @@ void send(string file_name){
     QFileInfo fi(QString::fromStdString(file_path));
     if(fi.isFile()){
         qDebug()<<"file exists ...";
-        if(fi.suffix()=="jpg"||fi.suffix()=="png"||fi.suffix()=="gif"||fi.suffix()=="bmp"){
+        if(fi.suffix()=="jpg"||fi.suffix()=="png"||fi.suffix()=="gif"||fi.suffix()=="bmp"||fi.suffix()=="txt"){
             QFileInfo my_fi(QString::fromStdString(file_path));
             hdrFmt =
             "HTTP/1.0 200 OK\r\n"
             "Server: MySocket Server\r\n"
-            "Content-Type: image/png\r\n"
+            "Content-Type: text/plain\r\n"
             "cahrset: utf-8\r\n"
             "Accept-Ranges: bytes\r\n"
             "Content-Length: %d\r\n\r\n";
@@ -233,23 +239,18 @@ void send(string file_name){
                     break;
             }
             rfile.close();
-            ///wfile.close();
+            //wfile.close();
+            MainWindow::updateTextBrowser(QString::fromStdString("request to image : "+file_path));
             return ;
         }
-        /////////头部格式
+        ///////////头部信息
         hdrFmt =
         "HTTP/1.0 200 OK\r\n"
         "Server: MySocket Server\r\n"
         "Content-Type: text/html\r\n"
         "cahrset: utf-8\r\n"
         "Accept-Ranges: bytes\r\n"
-        "Content-Length: %d\r\n\r\n\0";
-        //
-        ///html
-        //"Content-Type: text/html\r\n"
-        ///jpg
-        //"Content-Type: image/jpeg\r\n"
-
+        "Content-Length: %d\r\n\r\n";
         //////////要传送的网页内容
         CustomHtml =
         "<html>\r\n"
@@ -282,6 +283,7 @@ void send(string file_name){
         //CustomHtml
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
+        MainWindow::updateTextBrowser(QString::fromStdString("request to file : "+file_path));
     }else if(fi.isDir()){
         qDebug()<<"is dir ...";
         Qdir = new QDir(QString::fromStdString(file_path));
@@ -323,6 +325,7 @@ void send(string file_name){
         //CustomHtml
         /////发送内容
         send(csock, CustomHtml.data(), CustomHtml.length(), 0);
+        MainWindow::updateTextBrowser(QString::fromStdString("request to dir : "+file_path));
     }
 
 }

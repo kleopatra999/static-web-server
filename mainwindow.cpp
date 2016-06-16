@@ -14,6 +14,7 @@
 #include <server.h>
 
 using namespace std;
+QTextBrowser *Qtb;
 
 
 
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    Qtb = ui->textBrowser;
 
 }
 
@@ -35,16 +37,19 @@ void MainWindow::on_start_button_clicked()
 {
     //start
     qDebug()<<"start button ..........................................................................................";
+    Qtb->append(QString::fromStdString("start button is clicked"));
     //是否是合法的ip
     QString pattern("^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$");
     QRegExp rx(pattern);
     bool match = rx.exactMatch(QString::fromStdString(ip_str));
     if(match){
         qDebug()<<"ip is legal...";
+        Qtb->append(QString::fromStdString("ip is legal"));
     }else{
         QMessageBox message(QMessageBox::Warning,"Information","ip is illegal",QMessageBox::Yes,NULL);
         message.exec();
         qDebug()<<"ip is illegal...";
+        Qtb->append(QString::fromStdString("ip is illegal"));
         return ;
 
     }
@@ -52,10 +57,12 @@ void MainWindow::on_start_button_clicked()
     if(port_int>=1&&port_int<65536){
 
         qDebug()<<"port is legal...";
+        Qtb->append(QString::fromStdString("port is legal"));
     }else{
         QMessageBox message(QMessageBox::Warning,"Information","port is illegal..",QMessageBox::Yes,NULL);
         message.exec();
         qDebug()<<"port is illegal...";
+        Qtb->append(QString::fromStdString("port is illegal"));
         return ;
     }
     //是否是合法的目录
@@ -63,24 +70,16 @@ void MainWindow::on_start_button_clicked()
     QFileInfo fi(QString::fromStdString(dir_str));
     if(fi.isDir()){
         qDebug()<<"dir is legal...";
+        Qtb->append(QString::fromStdString("dir is legal"));
     }else{
         QMessageBox message(QMessageBox::Warning,"Information","dir is illegal..",QMessageBox::Yes,NULL);
         message.exec();
         qDebug()<<"dir is illegal...";
+        Qtb->append(QString::fromStdString("dir is illegal"));
         return ;
     }
     //实例化server
     Server::start(ip_str,port_int,dir_str);
-    //test qmessage box
-    QMessageBox message(QMessageBox::Warning,"Information","Really to clear data?",QMessageBox::Yes|QMessageBox::No,NULL);
-    if (message.exec()==QMessageBox::Yes)
-    {
-        qDebug()<<"clicked yes\n";
-    }
-    else
-    {
-        qDebug()<<"clicked no\n";
-    }
     //
     qDebug()<<"ip is :"<<QString::fromStdString(ip_str)<<",port is :"<<QString::fromStdString(port_str)<<",dir is :"<<QString::fromStdString(dir_str);
 
@@ -139,3 +138,14 @@ void MainWindow::on_lineEdit_3_textChanged(const QString &arg1)
     dir_str = arg1.toStdString();
     //dir_str = "E://test";
 }
+
+void MainWindow::updateTextBrowser(QString Qtxt){
+
+    //ui->textBrowser->append(QString::fromStdString("abc"));
+    Qtb->append(Qtxt);
+    //Qtb->append(QString::fromStdString("abc"));
+}
+
+
+
+

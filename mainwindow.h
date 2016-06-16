@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    static void updateTextBrowser(QString Qtxt);
     ~MainWindow();
     string ip_str;
     string port_str;
@@ -34,6 +35,7 @@ private slots:
     void on_lineEdit_2_textChanged(const QString &arg1);
 
     void on_lineEdit_3_textChanged(const QString &arg1);
+
 
 private:
     Ui::MainWindow *ui;
