@@ -125,7 +125,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "WebServer", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "WebServer-Kompasim", 0));
         lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "enter an ip", 0));
         lineEdit_2->setPlaceholderText(QApplication::translate("MainWindow", "enter a port", 0));
         lineEdit_3->setPlaceholderText(QApplication::translate("MainWindow", "enter a dir", 0));
